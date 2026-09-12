@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    // JS features we're allowed to use — Node 22 supports modern ESNext.
+    "target": "ESNext",
+    "module": "ESNext",
+    // How imports are resolved — "Bundler" lets us write extensionless imports.
+    "moduleResolution": "Bundler",
+    // Turn on every strict check — most importantly, no using a value
+    // that might be null/undefined without checking it first.
+    "strict": true,
+    // We only type-check; Playwright does the actual running. Produce no .js.
+    "noEmit": true,
+    // Skip type-checking third-party .d.ts files in node_modules (faster).
+    "skipLibCheck": true,
+    // Smooth over CommonJS/ESM import differences.
+    "esModuleInterop": true,
+    // Allow importing .json files directly.
+    "resolveJsonModule": true,
+    // Make Node globals (process, etc.) available and typed.
+    "types": ["node"]
+  },
+  "include": ["src", "tests", "playwright.config.ts"]
+}
