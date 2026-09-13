@@ -2,7 +2,11 @@ import "dotenv/config";
 
 interface EnvConfig {
   baseUrl: string;
+  testEnv: string;
   bootstrap: Record<string, string>;
+  prodBaseUrl?: string;
+  prodEmail?: string;
+  prodPassword?: string;
 }
 
 // Fail fast — a missing required env var throws here, not as a confusing
@@ -17,6 +21,7 @@ function requireEnv(key: string): string {
 
 export const env: EnvConfig = {
   baseUrl: requireEnv("BASE_URL"),
+  testEnv: process.env["TEST_ENV"] || "qa",
   bootstrap: {
     downstreamEnvironment: "itn01",
     stubUrl: requireEnv("STUB_URL"),
@@ -26,3 +31,9 @@ export const env: EnvConfig = {
     downstreamTargetServer: "",
   },
 };
+
+if (env.testEnv === "production") {
+  env.prodBaseUrl = requireEnv("PROD_BASE_URL");
+  env.prodEmail = requireEnv("PROD_EMAIL");
+  env.prodPassword = requireEnv("PROD_PASSWORD");
+}

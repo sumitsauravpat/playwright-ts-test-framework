@@ -6,7 +6,6 @@ export class TestHubPage {
   constructor(private page: Page) {}
 
   async bootstrap() {
-    await this.page.goto(env.baseUrl);
     for (const [key, value] of Object.entries(env.bootstrap)) {
       await this.page.locator(loc.bootstrapField(key)).fill(value);
     }
