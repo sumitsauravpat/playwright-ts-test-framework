@@ -5,4 +5,7 @@ export const salesSummaryLocators = {
   monthlySubtotalAmt: "monthly-subtotal-amount",
   monthlyTaxAmt: '[data-testid="total-tax"]',
   monthlyDueValue: '[data-testid="monthly-total-due-value"]',
+  rateplanOldPrice: '[data-testid="rateplan-old-price-base"]',
+  rateplanNewPrice: '[data-testid="rateplan-price-base"]',
+  rateplanSavings: '[data-testid="rateplan-save-base"]',
 };

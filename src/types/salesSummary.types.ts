@@ -13,13 +13,21 @@ export interface SubscriptionTax {
   taxRate: number;
 }
 
+export interface PromotionDetail {
+  promotionBenefitDetails: {
+    promotionBenefitNoTaxAmount: number;
+  }[];
+}
+
 export interface SalesSummaryItem {
   ratePlanName?: APILocalizedName[];
   paymentPeriod?: string;
   deviceDetails?: DeviceDetail[];
   subscriptionTaxes?: SubscriptionTax[];
   ratePlanAndAddOnsNoTaxAmount: number;
+  ratePlanAndAddOnsNoTaxBaseAmount: number;
   ratePlanAndAddOnsWithTaxAmount: number;
+  promotionDetails?: PromotionDetail[];
 }
 
 export interface SalesSummaryResponse {
@@ -29,6 +37,7 @@ export interface SalesSummaryResponse {
     quoteId: string;
     salesSummary: {
       salesSummaryItems: SalesSummaryItem[];
+      dueMonthlyNoTaxTotalAmount: number;
     };
   };
 }

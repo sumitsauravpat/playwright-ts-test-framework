@@ -19,6 +19,9 @@ export const test = base.extend<Fixtures>({
     await use(context);
   },
 
+  // salesSummaryResponse is unused directly — listing it here forces Playwright to
+  // resolve it (and its mount/login side effects) before page is handed back.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   mountedMfe: async ({ page, salesSummaryResponse }, use) => {
     await use(page);
   },
