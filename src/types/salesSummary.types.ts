@@ -28,6 +28,8 @@ export interface SalesSummaryItem {
   ratePlanAndAddOnsNoTaxBaseAmount: number;
   ratePlanAndAddOnsWithTaxAmount: number;
   promotionDetails?: PromotionDetail[];
+  ratePlanComboDiscountAmount?: number;
+  ratePlanAttachment?: RatePlanAttachment[];
 }
 
 export interface SalesSummaryResponse {
@@ -40,4 +42,10 @@ export interface SalesSummaryResponse {
       dueMonthlyNoTaxTotalAmount: number;
     };
   };
+}
+
+export interface RatePlanAttachment {
+  name: string;
+  locale: string;
+  content: string;
 }

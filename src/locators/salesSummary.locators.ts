@@ -8,4 +8,6 @@ export const salesSummaryLocators = {
   rateplanOldPrice: '[data-testid="rateplan-old-price-base"]',
   rateplanNewPrice: '[data-testid="rateplan-price-base"]',
   rateplanSavings: '[data-testid="rateplan-save-base"]',
+  ratePlanFeatureBullet: (lineIndex: number, bulletIndex: number) =>
+    `[data-testid="summary-feature-${lineIndex}-${bulletIndex}"]`,
 };

@@ -2,6 +2,7 @@ import { expect, Page } from "@playwright/test";
 import { SalesSummaryItem } from "../types/salesSummary.types";
 import { expectedLabel } from "../fixtures/expectedLabels";
 import { salesSummaryLocators as loc } from "../locators/salesSummary.locators";
+import { stripLegalPlaceholder, formatCurrency } from "../utils/text.utils";
 
 export const validatePaymentPeriod = async function ({
   page,
@@ -73,7 +74,7 @@ export async function validateRatePlanPricing({
 }) {
   const expectedOldPrice = `$${oldPrice.toFixed(2)}`;
   const expectedNewPrice = `$${newPrice.toFixed(2)}`;
-  const expectedSavings = `Save $${savings}`;
+  const expectedSavings = `Save $${formatCurrency(savings)}`;
 
   const actualOldPrice = await page.locator(loc.rateplanOldPrice).nth(index).textContent();
   const actualNewPrice = await page.locator(loc.rateplanNewPrice).nth(index).textContent();
@@ -81,4 +82,31 @@ export async function validateRatePlanPricing({
   expect(actualOldPrice).toBe(expectedOldPrice);
   expect(actualNewPrice).toBe(expectedNewPrice);
   expect(actualSavings).toBe(expectedSavings);
+}
+
+export async function validateRatePlanFeatureBullets({
+  page,
+  item,
+  index,
+  language,
+}: {
+  page: Page;
+  item: SalesSummaryItem;
+  index: number;
+  language: string;
+}) {
+  const expectedBullets = item.ratePlanAttachment
+    ?.filter((entry) => entry.name === "Feature" && entry.locale === language)
+    .map((pull) => stripLegalPlaceholder(pull.content));
+
+  const actualBullets = await Promise.all(
+    expectedBullets?.map(async (_, bulletIndex) =>
+      (await page.locator(loc.ratePlanFeatureBullet(index, bulletIndex)).textContent())?.replace(
+        /(?<=[a-zA-Z])\d(?=\s|$)/g,
+        "",
+      ),
+    ) ?? [],
+  );
+
+  expect(actualBullets).toEqual(expectedBullets);
 }
