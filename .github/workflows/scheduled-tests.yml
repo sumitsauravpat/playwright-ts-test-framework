@@ -6,6 +6,8 @@ on:
 
 jobs:
   build:
+    permissions:
+      id-token: write
     runs-on: ubuntu-latest
     env:
       BASE_URL: ${{ secrets.BASE_URL }}
@@ -25,3 +27,19 @@ jobs:
         with:
           path: playwright-report/
           name: playwright-report
+      #This ONE step does the WHOLE handshake: requests GitHub's token, sends it to Google, gets back Google's own credential — all in one action. It's really "authenticate to GCP," not just "generate a token.
+      - name: the whole auth handshake (token + exchange, in one step)
+        uses: google-github-actions/auth@v2
+        if: failure()
+        with:
+          workload_identity_provider: projects/64414338682/locations/global/workloadIdentityPools/github-actions-pool/providers/github-provider
+          service_account: ci-log-writer@project-63ef1455-43c3-461c-a63.iam.gserviceaccount.com
+
+      #this does NOT do any authentication at all. Its ONLY job is installing the gcloud COMMAND-LINE TOOL onto the runner, so step 3 can actually run gcloud commands
+      - name: install the gcloud CLI tool (no auth involved at all)
+        uses: google-github-actions/setup-gcloud@v2
+        if: failure()
+
+      - name: gcloud CLI to write the log entry
+        run: gcloud logging write ci-failures "Playwright suite failed" --severity=ERROR
+        if: failure()
