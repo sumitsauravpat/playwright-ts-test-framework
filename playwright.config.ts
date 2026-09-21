@@ -14,7 +14,7 @@ export default defineConfig({
   // One worker on CI for stable logs; parallel locally.
   workers: process.env.CI ? 1 : undefined,
   // Terminal progress (list) + browsable HTML report.
-  reporter: [["list"], ["html"]],
+  reporter: [["list"], ["html"], ["./src/reporters/gcpFailureReporter.ts"]],
   use: {
     baseURL: env.baseUrl,
     // Capture a full trace only when a test is retried.
